@@ -118,4 +118,214 @@ public class RBTreeTest {
         Assert.assertEquals(level3Right,  level2Left.rightChild);
         Assert.assertEquals(level4Right,  level2Left.leftChild);
     }
+
+    @Test
+    public void InsCase1() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 20,  Color.RED);
+
+        tree.insertCase1(root);
+
+        Assert.assertEquals(Color.BLACK,  root.color);
+    }
+
+    @Test
+    public void InsCase2() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 20,  Color.BLACK);
+        Node level2Left = new Node(root, null, null, 18, Color.RED);
+
+        root.leftChild = level2Left;
+
+        tree.insertCase1(level2Left);
+
+        Assert.assertEquals(Color.RED,  level2Left.color);
+    }
+
+    @Test
+    public void InsCase3() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 40,  Color.BLACK);
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.RED);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.RED);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, 55, Color.BLACK);
+
+        Node level4Left_Left = new Node(level3Left_Left, null, null, 24, Color.BLACK);
+        Node level4Right_Left  = new Node(level3Left_Left, null, null, 26, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Left_Left.leftChild =level4Left_Left;
+        level3Left_Left.rightChild = level4Right_Left;
+
+        tree.insertCase1(level3Left_Left);
+
+        Assert.assertEquals(Color.BLACK,  level2Left.color);
+        Assert.assertEquals(Color.BLACK,  level2Right.color);
+        Assert.assertEquals(Color.BLACK,  root.color);
+    }
+
+    @Test
+    public void InsCase4and5LeftPosition() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 40,  Color.BLACK);
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.RED);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, 55, Color.BLACK);
+
+        Node level4Left_Right = new Node(level3Right_Left, null, null, 33, Color.BLACK);
+        Node level4Right_Right  = new Node(level3Right_Left, null, null, 36, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Right_Left.leftChild =level4Left_Right;
+        level3Right_Left.rightChild = level4Right_Right;
+
+        tree.insertCase1(level3Right_Left);
+
+        Assert.assertEquals(level4Right_Right, root.leftChild);
+        Assert.assertEquals(root, level3Right_Left.rightChild);
+        Assert.assertEquals(level2Left, level3Right_Left.leftChild);
+        Assert.assertEquals(Color.BLACK, level3Right_Left.color);
+        Assert.assertEquals(Color.RED, root.color);
+        Assert.assertEquals(Color.RED,  level2Left.color);
+    }
+
+    @Test
+    public void InsCase4and5LeftPositionWithoutRotatingOn4Case() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 40,  Color.BLACK);
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.RED);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, 55, Color.BLACK);
+
+        Node level4Left_Right = new Node(level3Left_Left, null, null, 24, Color.BLACK);
+        Node level4Right_Right  = new Node(level3Left_Left, null, null, 26, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Left_Left.leftChild =level4Left_Right;
+        level3Left_Left.rightChild = level4Right_Right;
+
+        tree.insertCase1(level3Left_Left);
+
+        Assert.assertEquals(level3Right_Left, root.leftChild);
+        Assert.assertEquals(root, level2Left.rightChild);
+        Assert.assertEquals(level3Left_Left, level2Left.leftChild);
+        Assert.assertEquals(Color.BLACK, level2Left.color);
+        Assert.assertEquals(Color.RED, root.color);
+        Assert.assertEquals(Color.RED,  level3Left_Left.color);
+    }
+
+    @Test
+    public void InsCase4and5RightPosition() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 40,  Color.BLACK);
+
+        Node level2Left = new Node(root, null, null, 30, Color.BLACK);
+        Node level2Right = new Node(root, null, null, 50, Color.RED);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.RED);
+        Node level3Right_Right = new Node(level2Right, null, null, 55, Color.BLACK);
+
+        Node level4Left_LeftRight = new Node(level3Left_Right, null, null, 44, Color.BLACK);
+        Node level4Right_LeftRight  = new Node(level3Left_Right, null, null, 46, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Left_Right.leftChild =level4Left_LeftRight;
+        level3Left_Right.rightChild = level4Right_LeftRight;
+
+        tree.insertCase1(level3Left_Right);
+
+        Assert.assertEquals(level4Left_LeftRight, root.rightChild);
+        Assert.assertEquals(root, level3Left_Right.leftChild);
+        Assert.assertEquals(level2Right, level3Left_Right.rightChild);
+        Assert.assertEquals(Color.BLACK, level3Left_Right.color);
+        Assert.assertEquals(Color.RED, root.color);
+        Assert.assertEquals(Color.RED,  level2Right.color);
+    }
+
+    @Test
+    public void InsCase4and5RightPositionWithoutRotatingOn4Case() {
+        RBTree tree = new RBTree();
+        Node root = new Node(null, null, null, 40,  Color.BLACK);
+
+        Node level2Left = new Node(root, null, null, 30, Color.BLACK);
+        Node level2Right = new Node(root, null, null, 50, Color.RED);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, 55, Color.RED);
+
+        Node level4Left_RigthRight = new Node(level3Right_Right, null, null, 54, Color.BLACK);
+        Node level4Rigth_RigthRight  = new Node(level3Right_Right, null, null, 56, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Right_Right.leftChild =level4Left_RigthRight;
+        level3Right_Right.rightChild = level4Rigth_RigthRight;
+
+        tree.insertCase1(level3Right_Right);
+
+        Assert.assertEquals(level3Left_Right, root.rightChild);
+        Assert.assertEquals(root, level2Right.leftChild);
+        Assert.assertEquals(level3Right_Right, level2Right.rightChild);
+        Assert.assertEquals(Color.BLACK, level2Right.color);
+        Assert.assertEquals(Color.RED, root.color);
+        Assert.assertEquals(Color.RED,  level3Right_Right.color);
+    }
 }
