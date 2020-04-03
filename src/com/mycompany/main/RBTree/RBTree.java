@@ -2,16 +2,26 @@ package com.mycompany.main.RBTree;
 
 import com.mycompany.main.Enums.Color;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class RBTree {
 
-    public Node Grandparent(Node node){
+    public Node root;
+
+    public RBTree(int RootValue){
+        root = new Node(null, RootValue, Color.BLACK);
+    }
+
+    public Node grandparent(Node node){
         if(node != null && node.parent != null)
             return node.parent.parent;
         return null;
     }
 
-    public Node Uncle(Node node){
-        Node grandparent = Grandparent(node);
+    public Node uncle(Node node){
+        Node grandparent = grandparent(node);
         if(grandparent == null)
             return  null;
         if(node.parent == grandparent.rightChild)
@@ -20,14 +30,14 @@ public class RBTree {
             return grandparent.rightChild;
     }
 
-    public Node Sibling(Node node){
+    public Node sibling(Node node){
         if(node == node.parent.leftChild){
             return node.parent.rightChild;
         }
         else return node.parent.leftChild;
     }
 
-    public void RotateLeft(Node node){
+    public void rotateLeft(Node node){
         Node pivot = node.rightChild;
 
         pivot.parent = node.parent;
@@ -46,7 +56,7 @@ public class RBTree {
         pivot.leftChild = node;
     }
 
-    public void RotateRight(Node node){
+    public void rotateRight(Node node){
         Node pivot = node.leftChild;
 
         pivot.parent = node.parent;
@@ -65,6 +75,50 @@ public class RBTree {
         pivot.rightChild = node;
     }
 
+    public Node findNode(int value){
+        Node currentNode = root;
+        while(currentNode.value > 0){
+            if(currentNode.value == value)
+                return currentNode;
+            if(currentNode.value > value){
+                currentNode = currentNode.leftChild;
+            }
+            else
+                currentNode = currentNode.rightChild;
+        }
+        return currentNode;
+    }
+
+    public Node maxInSubTree(Node subRoot){
+        Node maxNode = subRoot;
+        while(maxNode.value > 0){
+            maxNode = maxNode.rightChild;
+        }
+
+        return maxNode.parent;
+    }
+
+    public Node minInSubTree(Node subRoot){
+        Node minNode = subRoot;
+        while(minNode.value > 0){
+            minNode = minNode.leftChild;
+        }
+        return minNode.parent;
+    }
+
+    public void insertNode(int value){
+        Node nodeForInsert = findNode(value);
+
+        if(nodeForInsert.value == value){
+            return;
+        }
+
+        nodeForInsert.AddNullChilds();
+        nodeForInsert.value = value;
+
+        insertCase1(nodeForInsert);
+    }
+
     public void insertCase1(Node node){
         if(node.parent == null){
             node.color = Color.BLACK;
@@ -81,12 +135,12 @@ public class RBTree {
 
     public void insertCase3(Node node){
 
-        Node uncle = Uncle(node);
+        Node uncle = uncle(node);
 
         if(uncle != null && uncle.color == Color.RED){
             node.parent.color = Color.BLACK;
             uncle.color = Color.BLACK;
-            Node grandparent = Grandparent(node);
+            Node grandparent = grandparent(node);
             grandparent.color = Color.RED;
             insertCase1(grandparent);
         } else {
@@ -95,15 +149,15 @@ public class RBTree {
     }
 
     public void insertCase4(Node node){
-        Node grandparent = Grandparent(node);
+        Node grandparent = grandparent(node);
 
         if(node == node.parent.rightChild && node.parent == grandparent.leftChild) {
-            this.RotateLeft(node.parent);
+            this.rotateLeft(node.parent);
             node = node.leftChild;
         }
 
         if(node == node.parent.leftChild && node.parent == grandparent.rightChild) {
-            RotateRight(node.parent);
+            rotateRight(node.parent);
             node = node.rightChild;
         }
 
@@ -111,18 +165,27 @@ public class RBTree {
     }
 
     public void insertCase5(Node node){
-        Node grandparent = Grandparent(node);
+        Node grandparent = grandparent(node);
 
         node.parent.color = Color.BLACK;
         grandparent.color = Color.RED;
         if(node == node.parent.leftChild && node.parent == grandparent.leftChild){
-            RotateRight(grandparent);
+            rotateRight(grandparent);
         }
         else
-            RotateLeft(grandparent);
+            rotateLeft(grandparent);
     }
 
-    public void ReplaceNode(Node node, Node child){
+    public void deleteNode(int value){
+        Node nodeForReplace = findNode(value);
+        Node nodeFoeDelete = minInSubTree(nodeForReplace.rightChild);
+
+        nodeForReplace.value = nodeFoeDelete.value;
+
+        deleteOneChild(nodeFoeDelete);
+    }
+
+    public void replaceNode(Node node, Node child){
         child.parent = node.parent;
         if(node.parent == null)
             return;
@@ -133,55 +196,55 @@ public class RBTree {
             node.parent.rightChild = child;
     }
 
-    public void DeleteOneChild(Node node){
+    public void deleteOneChild(Node node){
         Node child = node.rightChild.value < 0 ? node.leftChild : node.rightChild;
 
-        ReplaceNode(node, child);
+        replaceNode(node, child);
         if(node.color == Color.BLACK){
             if(child.color == Color.RED) {
                 child.color = Color.BLACK;
             }
             else
-                DeleteCase1(child);
+                deleteCase1(child);
         }
     }
 
-    public void DeleteCase1(Node node){
+    public void deleteCase1(Node node){
         if(node.parent != null)
-            DeleteCase2(node);
+            deleteCase2(node);
     }
 
-    public void DeleteCase2(Node node){
-        Node sibling = Sibling(node);
+    public void deleteCase2(Node node){
+        Node sibling = sibling(node);
 
         if(sibling.color == Color.RED){
             node.parent.color = Color.RED;
             sibling.color = Color.BLACK;
             if(node == node.parent.leftChild)
-                RotateLeft(node.parent);
+                rotateLeft(node.parent);
             else
-                RotateRight(node.parent);
+                rotateRight(node.parent);
         }
 
-        DeleteCase3(node);
+        deleteCase3(node);
     }
 
-    public void DeleteCase3(Node node){
-        Node sibling = Sibling(node);
+    public void deleteCase3(Node node){
+        Node sibling = sibling(node);
 
         if(node.parent.color == Color.BLACK
                 && sibling.color == Color.BLACK
                 && sibling.leftChild.color == Color.BLACK
                 && sibling.rightChild.color == Color.BLACK){
             sibling.color = Color.RED;
-            DeleteCase1(node);
+            deleteCase1(node);
         }
         else
-            DeleteCase4(node);
+            deleteCase4(node);
     }
 
-    public void DeleteCase4(Node node){
-        Node sibling = this.Sibling(node);
+    public void deleteCase4(Node node){
+        Node sibling = this.sibling(node);
 
         if(node.parent.color == Color.RED
                 && sibling.color == Color.BLACK
@@ -191,11 +254,11 @@ public class RBTree {
             node.parent.color = Color.BLACK;
         }
         else
-            DeleteCase5(node);
+            deleteCase5(node);
     }
 
-    public void DeleteCase5(Node node){
-        Node sibling = Sibling(node);
+    public void deleteCase5(Node node){
+        Node sibling = sibling(node);
 
         if(sibling.color == Color.BLACK){
             if(node == node.parent.leftChild
@@ -203,32 +266,32 @@ public class RBTree {
                 && sibling.leftChild.color == Color.RED){
                 sibling.color = Color.RED;
                 sibling.color = Color.BLACK;
-                this.RotateRight(sibling);
+                this.rotateRight(sibling);
             }
             else if(node == node.parent.rightChild
                     && sibling.leftChild.color == Color.BLACK
                     && sibling.rightChild.color == Color.RED) {
                     sibling.color = Color.RED;
                     sibling.rightChild.color = Color.BLACK;
-                    RotateLeft(sibling);
+                    rotateLeft(sibling);
             }
         }
-        DeleteCase6(node);
+        deleteCase6(node);
     }
 
-    public void DeleteCase6(Node node){
-        Node sibling = Sibling(node);
+    public void deleteCase6(Node node){
+        Node sibling = sibling(node);
 
         sibling.color = node.parent.color;
         node.parent.color = Color.BLACK;
 
         if(node == node.parent.leftChild){
             sibling.rightChild.color = Color.BLACK;
-            RotateLeft(node.parent);
+            rotateLeft(node.parent);
         }
         else {
             sibling.leftChild.color = Color.BLACK;
-            RotateRight(node.parent);
+            rotateRight(node.parent);
         }
     }
 }

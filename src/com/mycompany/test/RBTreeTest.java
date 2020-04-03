@@ -11,8 +11,8 @@ public class RBTreeTest {
     @Test
     public void grandparent() {
 
-        RBTree tree = new RBTree();
-        Node grandparent = new Node(null, null, null, 10,  Color.BLACK);
+        RBTree tree = new RBTree(10);
+        Node grandparent = tree.root;
 
         Node parentLeft = new Node(grandparent, null, null, 6, Color.RED);
         Node sampleLeft = new Node(parentLeft, null, null, 3, Color.BLACK);
@@ -26,14 +26,14 @@ public class RBTreeTest {
         parentLeft.leftChild = sampleLeft;
         parentRight.rightChild = sampleRight;
 
-        Assert.assertEquals(grandparent, tree.Grandparent(sampleLeft));
-        Assert.assertEquals(grandparent, tree.Grandparent(sampleRight));
+        Assert.assertEquals(grandparent, tree.grandparent(sampleLeft));
+        Assert.assertEquals(grandparent, tree.grandparent(sampleRight));
     }
 
     @Test
     public void uncle() {
-        RBTree tree = new RBTree();
-        Node grandparent = new Node(null, null, null, 10,  Color.BLACK);
+        RBTree tree = new RBTree(10);
+        Node grandparent = tree.root;
 
         Node parentLeft = new Node(grandparent, null, null, 6, Color.RED);
         Node sampleLeft = new Node(parentLeft, null, null, 3, Color.BLACK);
@@ -47,14 +47,14 @@ public class RBTreeTest {
         parentLeft.leftChild = sampleLeft;
         parentRight.rightChild = sampleRight;
 
-        Assert.assertEquals(parentRight, tree.Uncle(sampleLeft));
-        Assert.assertEquals(parentLeft,  tree.Uncle(sampleRight));
+        Assert.assertEquals(parentRight, tree.uncle(sampleLeft));
+        Assert.assertEquals(parentLeft,  tree.uncle(sampleRight));
     }
 
     @Test
     public void LeftRotate() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 20,  Color.BLACK);
+        RBTree tree = new RBTree(20);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 15, Color.RED);
 
@@ -72,7 +72,7 @@ public class RBTreeTest {
         level3Right.leftChild = level4Left;
         level3Right.rightChild = level4Right;
 
-        tree.RotateLeft(level2Left);
+        tree.rotateLeft(level2Left);
 
         //Level3
         Assert.assertEquals(root, level3Right.parent);
@@ -87,8 +87,8 @@ public class RBTreeTest {
 
     @Test
     public void RightRotate() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 20,  Color.BLACK);
+        RBTree tree = new RBTree(20);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 18, Color.RED);
 
@@ -106,7 +106,7 @@ public class RBTreeTest {
         level3Left.leftChild = level4Left;
         level3Left.rightChild = level4Right;
 
-        tree.RotateRight(level2Left);
+        tree.rotateRight(level2Left);
 
         //Level3
         Assert.assertEquals(root, level3Left.parent);
@@ -121,8 +121,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase1() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 20,  Color.RED);
+        RBTree tree = new RBTree(20);
+        Node root = tree.root;
 
         tree.insertCase1(root);
 
@@ -131,8 +131,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase2() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 20,  Color.BLACK);
+        RBTree tree = new RBTree(20);
+        Node root = tree.root;
         Node level2Left = new Node(root, null, null, 18, Color.RED);
 
         root.leftChild = level2Left;
@@ -144,8 +144,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase3() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, 50, Color.RED);
@@ -179,8 +179,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase4and5LeftPosition() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, 50, Color.BLACK);
@@ -217,8 +217,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase4and5LeftPositionWithoutRotatingOn4Case() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, 50, Color.BLACK);
@@ -255,8 +255,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase4and5RightPosition() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, 50, Color.RED);
@@ -293,8 +293,8 @@ public class RBTreeTest {
 
     @Test
     public void InsCase4and5RightPositionWithoutRotatingOn4Case() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, 50, Color.RED);
@@ -331,8 +331,9 @@ public class RBTreeTest {
 
     @Test
     public void DelCaseOnlyReplaceRedBlack() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.RED);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
+        root.color = Color.RED;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, -10, Color.BLACK);
@@ -340,15 +341,15 @@ public class RBTreeTest {
         root.leftChild = level2Left;
         root.rightChild = level2Right;
 
-        tree.DeleteOneChild(root);
+        tree.deleteOneChild(root);
         Assert.assertEquals(null, level2Left.parent);
         Assert.assertEquals(Color.BLACK, level2Left.color);
     }
 
     @Test
     public void DelCaseOnlyReplaceBlackRed() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, -10, Color.BLACK);
@@ -356,15 +357,15 @@ public class RBTreeTest {
         root.leftChild = level2Left;
         root.rightChild = level2Right;
 
-        tree.DeleteOneChild(root);
+        tree.deleteOneChild(root);
         Assert.assertEquals(null, level2Left.parent);
         Assert.assertEquals(Color.BLACK, level2Left.color);
     }
 
     @Test
     public void DelCase1() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, -10, Color.BLACK);
@@ -372,15 +373,15 @@ public class RBTreeTest {
         root.leftChild = level2Left;
         root.rightChild = level2Right;
 
-        tree.DeleteOneChild(root);
+        tree.deleteOneChild(root);
         Assert.assertEquals(null, level2Left.parent);
         Assert.assertEquals(Color.BLACK, level2Left.color);
     }
 
     @Test
     public void DelCase2and4RightSubtree() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, 50, Color.RED);
@@ -405,7 +406,7 @@ public class RBTreeTest {
         level3Left_Right.leftChild = level4Left_RightLeft;
         level3Left_Right.rightChild = level4Right_RightLeft;
 
-        tree.DeleteOneChild(level2Left);
+        tree.deleteOneChild(level2Left);
 
         Assert.assertEquals(null, level2Right.parent);
         Assert.assertEquals(Color.BLACK, level2Right.color);
@@ -418,8 +419,8 @@ public class RBTreeTest {
 
     @Test
     public void DelCase2and4LeftSubtree() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, 50, Color.BLACK);
@@ -444,7 +445,7 @@ public class RBTreeTest {
         level3Right_Left.leftChild = level4Left_LeftRight;
         level3Right_Left.rightChild = level4Right_LeftRight;
 
-        tree.DeleteOneChild(level2Right);
+        tree.deleteOneChild(level2Right);
 
         Assert.assertEquals(null, level2Left.parent);
         Assert.assertEquals(Color.BLACK, level2Left.color);
@@ -457,8 +458,8 @@ public class RBTreeTest {
 
     @Test
     public void DelCase2and5and6RightSubtree() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.BLACK);
         Node level2Right = new Node(root, null, null, 50, Color.RED);
@@ -489,7 +490,7 @@ public class RBTreeTest {
         level4Left_RightLeft.leftChild = ADDDITIONALLLLLfor43Left;
         level4Left_RightLeft.rightChild = ADDDITIONALLLLLfor43Right;
 
-        tree.DeleteOneChild(level2Left);
+        tree.deleteOneChild(level2Left);
 
         Assert.assertEquals(null, level2Right.parent);
         Assert.assertEquals(Color.BLACK, level2Right.color);
@@ -508,8 +509,8 @@ public class RBTreeTest {
 
     @Test
     public void DelCase2and5and6LeftSubtree() {
-        RBTree tree = new RBTree();
-        Node root = new Node(null, null, null, 40,  Color.BLACK);
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
 
         Node level2Left = new Node(root, null, null, 30, Color.RED);
         Node level2Right = new Node(root, null, null, 50, Color.BLACK);
@@ -542,7 +543,7 @@ public class RBTreeTest {
         level4Right_LeftRight.leftChild = ADDDITIONALLLLLfor37Left;
         level4Right_LeftRight.rightChild = ADDDITIONALLLLLfor37Right;
 
-        tree.DeleteOneChild(level2Right);
+        tree.deleteOneChild(level2Right);
 
         Assert.assertEquals(null, level2Left.parent);
         Assert.assertEquals(Color.BLACK, level2Left.color);
@@ -558,7 +559,184 @@ public class RBTreeTest {
 
         Assert.assertEquals(Color.BLACK, level3Right_Left.color);
         Assert.assertEquals(ADDDITIONALLLLLfor37Left, level3Right_Left.rightChild);
+    }
+
+    @Test
+    public void FindTestWithMatchNode() {
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, -10, Color.BLACK);
+
+        Node level4Left_LeftRight = new Node(level3Right_Left, null, null, 34, Color.BLACK);
+        Node level4Right_LeftRight = new Node(level3Right_Left, null, null, 37, Color.RED);
+
+        Node ADDDITIONALLLLLfor37Left = new Node(level3Right_Left, null, null, 36, Color.BLACK);
+        Node ADDDITIONALLLLLfor37Right = new Node(level3Right_Left, null, null, 38, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+        level3Right_Left.leftChild = level4Left_LeftRight;
+        level3Right_Left.rightChild = level4Right_LeftRight;
+
+        level4Right_LeftRight.leftChild = ADDDITIONALLLLLfor37Left;
+        level4Right_LeftRight.rightChild = ADDDITIONALLLLLfor37Right;
+
+        Node fortyFive = tree.findNode(45);
+        Node thirtyEight = tree.findNode(38);
+
+        Assert.assertEquals(level3Left_Right, fortyFive);
+        Assert.assertEquals(ADDDITIONALLLLLfor37Right, thirtyEight);
+    }
+
+    @Test
+    public void FindTestWithoutMatchNode() {
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, -10, Color.BLACK);
+
+        Node level4Left_LeftRight = new Node(level3Right_Left, null, null, 34, Color.BLACK);
+        Node level4Right_LeftRight = new Node(level3Right_Left, null, null, 37, Color.RED);
+
+        Node ADDDITIONALLLLLfor37Left = new Node(level3Right_Left, null, null, 36, Color.BLACK);
+        Node ADDDITIONALLLLLfor37Right = new Node(level3Right_Left, null, null, 38, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
 
 
+        level3Right_Left.leftChild = level4Left_LeftRight;
+        level3Right_Left.rightChild = level4Right_LeftRight;
+
+        level4Right_LeftRight.leftChild = ADDDITIONALLLLLfor37Left;
+        level4Right_LeftRight.rightChild = ADDDITIONALLLLLfor37Right;
+
+        level3Left_Right.AddNullChilds();
+        level3Left_Left.AddNullChilds();
+        level4Left_LeftRight.AddNullChilds();
+        ADDDITIONALLLLLfor37Left.AddNullChilds();
+        ADDDITIONALLLLLfor37Right.AddNullChilds();
+
+        Node fifty = tree.findNode(55);
+        Node thirtyThree = tree.findNode(33);
+
+        Assert.assertEquals(level3Right_Right, fifty);
+        Assert.assertEquals(level4Left_LeftRight.leftChild, thirtyThree);
+    }
+
+    public void MaxInSubTreeTest() {
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, -10, Color.BLACK);
+
+        Node level4Left_LeftRight = new Node(level3Right_Left, null, null, 34, Color.BLACK);
+        Node level4Right_LeftRight = new Node(level3Right_Left, null, null, 37, Color.RED);
+
+        Node ADDDITIONALLLLLfor37Left = new Node(level3Right_Left, null, null, 36, Color.BLACK);
+        Node ADDDITIONALLLLLfor37Right = new Node(level3Right_Left, null, null, 38, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+
+        level3Right_Left.leftChild = level4Left_LeftRight;
+        level3Right_Left.rightChild = level4Right_LeftRight;
+
+        level4Right_LeftRight.leftChild = ADDDITIONALLLLLfor37Left;
+        level4Right_LeftRight.rightChild = ADDDITIONALLLLLfor37Right;
+
+        level3Left_Right.AddNullChilds();
+        level3Left_Left.AddNullChilds();
+        level4Left_LeftRight.AddNullChilds();
+        ADDDITIONALLLLLfor37Left.AddNullChilds();
+        ADDDITIONALLLLLfor37Right.AddNullChilds();
+
+        Node maxInSubTree = tree.maxInSubTree(level2Left);
+
+        Assert.assertEquals(level3Right_Left, maxInSubTree);
+    }
+
+    public void MinInSubTreeTest() {
+        RBTree tree = new RBTree(40);
+        Node root = tree.root;
+
+        Node level2Left = new Node(root, null, null, 30, Color.RED);
+        Node level2Right = new Node(root, null, null, 50, Color.BLACK);
+
+        Node level3Left_Left = new Node(level2Left, null, null, 25, Color.BLACK);
+        Node level3Right_Left  = new Node(level2Left, null, null, 35, Color.BLACK);
+        Node level3Left_Right = new Node(level2Right, null, null, 45, Color.BLACK);
+        Node level3Right_Right = new Node(level2Right, null, null, -10, Color.BLACK);
+
+        Node level4Left_LeftRight = new Node(level3Right_Left, null, null, 34, Color.BLACK);
+        Node level4Right_LeftRight = new Node(level3Right_Left, null, null, 37, Color.RED);
+
+        Node ADDDITIONALLLLLfor37Left = new Node(level3Right_Left, null, null, 36, Color.BLACK);
+        Node ADDDITIONALLLLLfor37Right = new Node(level3Right_Left, null, null, 38, Color.BLACK);
+
+        root.leftChild = level2Left;
+        root.rightChild = level2Right;
+
+        level2Left.leftChild = level3Left_Left;
+        level2Left.rightChild = level3Right_Left;
+
+        level2Right.leftChild = level3Left_Right;
+        level2Right.rightChild = level3Right_Right;
+
+
+        level3Right_Left.leftChild = level4Left_LeftRight;
+        level3Right_Left.rightChild = level4Right_LeftRight;
+
+        level4Right_LeftRight.leftChild = ADDDITIONALLLLLfor37Left;
+        level4Right_LeftRight.rightChild = ADDDITIONALLLLLfor37Right;
+
+        level3Left_Right.AddNullChilds();
+        level3Left_Left.AddNullChilds();
+        level4Left_LeftRight.AddNullChilds();
+        ADDDITIONALLLLLfor37Left.AddNullChilds();
+        ADDDITIONALLLLLfor37Right.AddNullChilds();
+
+        Node minInSubTree = tree.maxInSubTree(level2Right);
+
+        Assert.assertEquals(level3Left_Right, minInSubTree);
     }
 }
