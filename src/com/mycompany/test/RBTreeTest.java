@@ -9,6 +9,16 @@ import org.junit.Test;
 public class RBTreeTest {
 
     @Test
+    public void createNewNode() {
+        RBTree tree = new RBTree(1);
+        tree.insertNode(2);
+
+        Assert.assertEquals(tree.root.rightChild.value, 2);
+        Assert.assertEquals(tree.root.rightChild.color, Color.RED);
+        Assert.assertEquals(tree.root.rightChild.parent, tree.root);
+    }
+
+    @Test
     public void grandparent() {
 
         RBTree tree = new RBTree(10);

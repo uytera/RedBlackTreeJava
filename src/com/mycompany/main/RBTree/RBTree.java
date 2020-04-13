@@ -20,6 +20,11 @@ public class RBTree {
         return null;
     }
 
+    public void rootFind() {
+        while(root.parent != null)
+            root = root.parent;
+    }
+
     public Node uncle(Node node){
         Node grandparent = grandparent(node);
         if(grandparent == null)
@@ -115,8 +120,10 @@ public class RBTree {
 
         nodeForInsert.AddNullChilds();
         nodeForInsert.value = value;
+        nodeForInsert.color = Color.RED;
 
         insertCase1(nodeForInsert);
+        rootFind();
     }
 
     public void insertCase1(Node node){
