@@ -185,11 +185,11 @@ public class RBTree {
 
     public void deleteNode(int value){
         Node nodeForReplace = findNode(value);
-        Node nodeFoeDelete = minInSubTree(nodeForReplace.rightChild);
+        Node nodeForDelete = minInSubTree(nodeForReplace.rightChild);
 
-        nodeForReplace.value = nodeFoeDelete.value;
+        nodeForReplace.value = nodeForDelete.value;
 
-        deleteOneChild(nodeFoeDelete);
+        deleteOneChild(nodeForDelete);
     }
 
     public void replaceNode(Node node, Node child){
