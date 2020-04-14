@@ -190,6 +190,7 @@ public class RBTree {
         nodeForReplace.value = nodeForDelete.value;
 
         deleteOneChild(nodeForDelete);
+        rootFind();
     }
 
     public void replaceNode(Node node, Node child){
